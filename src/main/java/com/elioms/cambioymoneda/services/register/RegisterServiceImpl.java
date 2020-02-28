@@ -4,7 +4,7 @@ import com.elioms.cambioymoneda.models.entity.BankAccount;
 import com.elioms.cambioymoneda.models.entity.Company;
 import com.elioms.cambioymoneda.models.request.RegisterRequest;
 import com.elioms.cambioymoneda.services.BankAccountService;
-import com.elioms.cambioymoneda.services.CompanyService;
+import com.elioms.cambioymoneda.services.company.CompanyService;
 import com.elioms.cambioymoneda.services.currency.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

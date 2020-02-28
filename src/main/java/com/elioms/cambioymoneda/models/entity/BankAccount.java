@@ -1,5 +1,6 @@
 package com.elioms.cambioymoneda.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class BankAccount implements Serializable {
     @Column(nullable = false)
     private String identifier;
 
+    @Column(name = "is_private")
+    private boolean isPrivate;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date createdAt;
@@ -41,6 +45,11 @@ public class BankAccount implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
+
+    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Beneficiary beneficiary;
 
     @PrePersist
     public void prePersist() {
@@ -109,6 +118,22 @@ public class BankAccount implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Beneficiary getBeneficiary() {
+        return beneficiary;
+    }
+
+    public void setBeneficiary(Beneficiary beneficiary) {
+        this.beneficiary = beneficiary;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 
     public Date getCreatedAt() {

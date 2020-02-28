@@ -3,10 +3,10 @@ package com.elioms.cambioymoneda.controllers;
 import com.elioms.cambioymoneda.exceptions.InvalidRequest;
 import com.elioms.cambioymoneda.models.dto.BankDto;
 import com.elioms.cambioymoneda.models.entity.Bank;
-import com.elioms.cambioymoneda.services.BankService;
+import com.elioms.cambioymoneda.models.entity.BankAccount;
+import com.elioms.cambioymoneda.services.bank.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +23,11 @@ public class BankController {
     @GetMapping
     public List<BankDto> index() {
         return bankService.findAll();
+    }
+
+    @GetMapping("/{id}/publicAccounts")
+    public List<BankAccount> findPublicAccounts(@PathVariable Long id) {
+        return bankService.findPublicBankAccounts(id);
     }
 
     @GetMapping("/{id}")

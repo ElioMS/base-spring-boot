@@ -6,7 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface IUserDao extends CrudRepository<User, Long> {
 
-    public User findByEmail(String email);
+    User findByEmail(String email);
+    Boolean existsUserByEmail(String email);
 
 //    @Query("SELECT u FROM User WHERE u.email=?1")
 //    public User findByUserEmail(String email);

@@ -33,6 +33,8 @@ public class PushNotificationService {
 
         RestClient client = new RestClient("https://fcm.googleapis.com/fcm/send", "key=AIzaSyDu2U1-6kuzYnfVSQxCwPjOGG2xR2T0Glo");
         client.post(body.toString());
+
+        logger.info("Success FCM");
     }
 
 }
