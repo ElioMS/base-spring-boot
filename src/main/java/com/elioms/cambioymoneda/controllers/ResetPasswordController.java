@@ -35,6 +35,7 @@ public class ResetPasswordController {
     public ResponseEntity<?> notify(@Valid @RequestBody Map<String, String> body) {
         var newErrors = new BindException(this, "");
         var email = body.get("email");
+        var type = body.get("from");
 
         if (email.equals("") || email == null) {
             newErrors.addError(new FieldError("", "email", "El email es un campo requerido."));
@@ -43,6 +44,8 @@ public class ResetPasswordController {
         InvalidRequest.check(newErrors);
 
         String code = RandomStringUtils.randomAlphanumeric(6);
+
+
 
         mailService.sendMail(email, "RECUPERAR CONTRASEÑA", "ENLACE: "+CYM_URI);
 

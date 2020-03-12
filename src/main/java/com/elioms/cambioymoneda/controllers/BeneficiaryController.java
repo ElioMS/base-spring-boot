@@ -51,11 +51,23 @@ public class BeneficiaryController {
     public Beneficiary create(@Valid @RequestBody BeneficiaryRequest body, Errors errors) {
         InvalidRequest.check(errors);
 
+        var newErrors = new BindException(this, "");
+
+        if (beneficiaryService.existsByRuc(body.getBeneficiary().getDocumentNumber())) {
+            newErrors.addError(new FieldError("", "documentNumber", "El número de documento ya ha sido tomado."));
+        }
+
+        if (beneficiaryService.existsByEmail(body.getBeneficiary().getEmail())) {
+            newErrors.addError(new FieldError("", "email", "El email ya ha sido tomado."));
+        }
+
+        InvalidRequest.check(newErrors);
+
         return beneficiaryService.create(body);
     }
 
 //    @PutMapping("/{id}")
-//    public ResponseEntity<?> update(@RequestBody List<BankAccount> body, @PathVariable Long id) {
+//    public ResponseEntity<?> update(@RequestBody UpdateBeneficiaryRequest body, @PathVariable Long id) {
 //
 //    }
 

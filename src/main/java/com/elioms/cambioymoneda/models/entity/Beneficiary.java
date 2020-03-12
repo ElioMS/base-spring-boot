@@ -29,6 +29,9 @@ public class Beneficiary implements Serializable {
     private String surname;
 
     @Column
+    private String companyType;
+
+    @Column
     private String contactInfo;
 
     @Column
@@ -214,5 +217,13 @@ public class Beneficiary implements Serializable {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public String getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(String companyType) {
+        this.companyType = companyType;
     }
 }

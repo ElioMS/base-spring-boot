@@ -18,4 +18,7 @@ public interface BeneficiaryService {
     Beneficiary create(BeneficiaryRequest request);
     List<BankAccount> listBankAccountByBeneficiary(Long id);
     Beneficiary findBeneficiaryByRuc(String ruc);
+
+    Boolean existsByRuc(String ruc);
+    Boolean existsByEmail(String email);
 }

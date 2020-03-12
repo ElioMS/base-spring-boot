@@ -15,9 +15,6 @@ public class BankAccount implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type", nullable = false, length = 1)
-    private Integer type;
-
     @Column(name = "bank_account_number", nullable = false)
     private String bankAccountNumber;
 
@@ -65,14 +62,6 @@ public class BankAccount implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     public String getBankAccountNumber() {

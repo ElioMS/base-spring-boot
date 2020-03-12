@@ -9,4 +9,6 @@ public interface BankAccountService {
     List<BankAccount> paginate(int page, int size, String sortDir, String sort);
     BankAccount save(BankAccount bankAccount);
     BankAccount update(BankAccount bankAccount, Long id);
+
+    String generateIdentifier(Long bankId, Long currencyId);
 }

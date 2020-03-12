@@ -2,6 +2,8 @@ package com.elioms.cambioymoneda.services;
 
 import com.elioms.cambioymoneda.exceptions.NotFoundException;
 import com.elioms.cambioymoneda.models.dao.IBankAccountDao;
+import com.elioms.cambioymoneda.models.dao.IBankDao;
+import com.elioms.cambioymoneda.models.dao.ICurrencyDao;
 import com.elioms.cambioymoneda.models.entity.BankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Autowired
     private IBankAccountDao bankAccountDao;
+
+    private IBankDao bankDao;
+    private ICurrencyDao currencyDao;
+
+    public BankAccountServiceImpl(IBankDao iBankDao,
+                                  ICurrencyDao iCurrencyDao) {
+        this.bankDao = iBankDao;
+        this.currencyDao = iCurrencyDao;
+    }
 
     @Override
     public List<BankAccount> paginate(int page, int size, String sortDir, String sort) {
@@ -47,5 +58,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 //        account.setCompany(bankAccount.getCompany());
 
         return bankAccountDao.save(account);
+    }
+
+    @Override
+    public String generateIdentifier(Long bankId, Long currencyId) {
+
+        var bank = bankDao.findById(bankId).orElse(null);
+        var currency = currencyDao.findById(currencyId).orElse(null);
+        var lastBankAccount = bankAccountDao.findTopByOrderByIdDesc();
+
+        return bank.getShortName()+currency.getShortName()+lastBankAccount.getId();
     }
 }

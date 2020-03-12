@@ -68,6 +68,16 @@ public class BeneficiaryServiceServiceImpl implements BeneficiaryService {
         return iBeneficiaryDao.findByDocumentNumber(ruc).orElse(null);
     }
 
+    @Override
+    public Boolean existsByRuc(String ruc) {
+        return iBeneficiaryDao.existsBeneficiaryByDocumentNumber(ruc);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return iBeneficiaryDao.existsBeneficiaryByEmail(email);
+    }
+
     private void createBankAccounts(Beneficiary beneficiary, List<BankAccount> bankAccountList) {
         bankAccountList.forEach(bankAccount -> {
             bankAccount.setBeneficiary(beneficiary);
