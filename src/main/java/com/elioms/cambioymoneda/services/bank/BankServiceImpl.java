@@ -1,9 +1,12 @@
-package com.elioms.cambioymoneda.services;
+package com.elioms.cambioymoneda.services.bank;
 
 import com.elioms.cambioymoneda.exceptions.NotFoundException;
+import com.elioms.cambioymoneda.models.dao.IBankAccountDao;
 import com.elioms.cambioymoneda.models.dto.BankDto;
 import com.elioms.cambioymoneda.models.entity.Bank;
 import com.elioms.cambioymoneda.models.dao.IBankDao;
+import com.elioms.cambioymoneda.models.entity.BankAccount;
+import com.elioms.cambioymoneda.services.bank.BankService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ public class BankServiceImpl implements BankService {
     private IBankDao IBankDao;
 
     @Autowired
+    private IBankAccountDao iBankAccountDao;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -28,6 +34,11 @@ public class BankServiceImpl implements BankService {
         return banks.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BankAccount> findPublicBankAccounts(Long id) {
+        return iBankAccountDao.findPublicAccounts(id);
     }
 
     @Override
@@ -44,6 +55,8 @@ public class BankServiceImpl implements BankService {
 //                () -> new NotFoundException("Banco no encontrado")
 //        );
     }
+
+
 
     private BankDto convertToDto(Bank bank) {
         return modelMapper.map(bank, BankDto.class);

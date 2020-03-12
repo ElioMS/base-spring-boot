@@ -21,6 +21,9 @@ public class Currency implements Serializable {
     @Column(name = "short_name" , nullable = false)
     private String shortName;
 
+    @Column(name = "symbol")
+    private String symbol;
+
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date createdAt;
@@ -54,6 +57,14 @@ public class Currency implements Serializable {
         this.shortName = shortName;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -61,4 +72,5 @@ public class Currency implements Serializable {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
 }

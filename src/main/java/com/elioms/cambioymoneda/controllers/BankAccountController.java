@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/v1/bankaccounts")
 public class BankAccountController {
 
-//    public List<BankAccount> index()
     @Autowired
     private BankAccountService bankAccountService;
 
@@ -23,7 +22,7 @@ public class BankAccountController {
     public List<BankAccount> index() {
         return bankAccountService.paginate(0, 10, "DESC", "id");
     }
-
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BankAccount store(@Valid @RequestBody BankAccount bankAccount, Errors errors) {
@@ -36,5 +35,4 @@ public class BankAccountController {
         InvalidRequest.check(errors);
         return bankAccountService.update(bankAccount, id);
     }
-
 }

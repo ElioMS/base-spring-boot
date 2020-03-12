@@ -1,12 +1,18 @@
 package com.elioms.cambioymoneda.controllers;
 
+import com.elioms.cambioymoneda.exceptions.InvalidRequest;
+import com.elioms.cambioymoneda.models.dto.BeneficiaryDto;
+import com.elioms.cambioymoneda.models.entity.BankAccount;
+import com.elioms.cambioymoneda.models.entity.Beneficiary;
 import com.elioms.cambioymoneda.models.entity.Company;
-import com.elioms.cambioymoneda.services.CompanyService;
+import com.elioms.cambioymoneda.services.company.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,4 +27,32 @@ public class CompanyController {
         return companyService.findAll();
     }
 
+    @GetMapping("/{id}/beneficiaries")
+    public List<BeneficiaryDto> findBeneficiaries(@PathVariable Long id) {
+        return companyService.findBeneficiaries(id);
+    }
+
+    @GetMapping("/{id}/bank/{bankId}")
+    public List<BankAccount> findBankAccounts(@PathVariable Long id, @PathVariable Long bankId) {
+        return companyService.findBankAccounts(id, bankId);
+    }
+
+    @PostMapping
+    public Company createCompany(@Valid @RequestBody Company company, Errors errors) {
+        InvalidRequest.check(errors);
+
+        var newErrors = new BindException(this, "");
+
+        if (companyService.existsByRuc(company.getRuc())) {
+            newErrors.addError(new FieldError("", "ruc", "El RUC ya ha sido tomado."));
+        }
+
+        if (companyService.existsByEmail(company.getEmail())) {
+            newErrors.addError(new FieldError("", "email", "El email ya ha sido tomado."));
+        }
+
+        InvalidRequest.check(newErrors);
+
+        return companyService.save(company);
+    }
 }

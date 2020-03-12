@@ -1,6 +1,8 @@
 package com.elioms.cambioymoneda.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@ToString
 @Table(name="users")
 public class User implements Serializable {
 
@@ -42,6 +45,12 @@ public class User implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name= "first_cellphone", nullable = false)
+    private String firstCellphone;
+
+    @Column(name= "second_cellphone")
+    private String secondCellphone;
+
     private Boolean status = false;
 
     @Column(name = "document_type")
@@ -60,11 +69,19 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
+    private Integer type;
+
     @JsonIgnoreProperties({"user"})
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Company> companies;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "privilege_user", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "privilege_id"})})
+    private List<Privilege> privileges;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
@@ -73,13 +90,17 @@ public class User implements Serializable {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column(name = "company_id")
+    private Integer companyId;
+
     public User() {
         this.companies = new ArrayList<>();
     }
 
     @PrePersist
     public void prePersist() {
-        enabled = false;
+        enabled = true;
+//        type = 1;
         createdAt = new Date();
     }
 
@@ -206,5 +227,45 @@ public class User implements Serializable {
 
     public void setCompanies(List<Company> companies) {
         this.companies = companies;
+    }
+
+    public List<Privilege> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(List<Privilege> privileges) {
+        this.privileges = privileges;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getFirstCellphone() {
+        return firstCellphone;
+    }
+
+    public void setFirstCellphone(String firstCellphone) {
+        this.firstCellphone = firstCellphone;
+    }
+
+    public String getSecondCellphone() {
+        return secondCellphone;
+    }
+
+    public void setSecondCellphone(String secondCellphone) {
+        this.secondCellphone = secondCellphone;
     }
 }
