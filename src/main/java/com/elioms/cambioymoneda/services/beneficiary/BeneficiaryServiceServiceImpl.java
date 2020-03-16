@@ -28,8 +28,8 @@ public class BeneficiaryServiceServiceImpl implements BeneficiaryService {
     @Autowired
     private IBankAccountDao iBankAccountDao;
 
-    @Autowired
-    private ModelMapper modelMapper;
+//    @Autowired
+//    private ModelMapper modelMapper;
 
     @Override
     public List<Beneficiary> findAll() {
@@ -85,7 +85,7 @@ public class BeneficiaryServiceServiceImpl implements BeneficiaryService {
         });
     }
 
-    private BeneficiaryListDto convertToDto(BankAccount bankAccount) {
-        return modelMapper.map(bankAccount, BeneficiaryListDto.class);
-    }
+//    private BeneficiaryListDto convertToDto(BankAccount bankAccount) {
+//        return modelMapper.map(bankAccount, BeneficiaryListDto.class);
+//    }
 }

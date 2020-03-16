@@ -32,13 +32,10 @@ public class BeneficiaryController {
 
         if (companyId != null && type != null) {
             var beneficiaries = beneficiaryService.findByCompanyAndType(companyId, type);
-            System.out.println("ID's: "+beneficiaries.toString());
 
             List<Long> ids = beneficiaries.stream()
                         .map(Beneficiary::getId)
                         .collect(Collectors.toList());
-
-            System.out.println("ID's: "+ids);
 
             return ResponseEntity.ok(beneficiaryService.findBankAccounts(ids));
         }
