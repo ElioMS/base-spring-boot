@@ -33,9 +33,6 @@ public class TransferenceServiceImpl implements TransferenceService {
 	private ITransferenceDao iTransferenceDao;
 
 	@Autowired
-	private IBeneficiaryDao iBeneficiaryDao;
-
-	@Autowired
 	private ICurrencyTransferenceDao iCurrencyTransferenceDao;
 
 	@Autowired
@@ -43,9 +40,6 @@ public class TransferenceServiceImpl implements TransferenceService {
 
 	@Autowired
 	private IUserDao iUserDao;
-
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@Override
 	public Transference create(CreateTransferRequest transference) {
@@ -94,12 +88,14 @@ public class TransferenceServiceImpl implements TransferenceService {
 		var transfer = iTransferenceDao.findById(id)
 				.orElseThrow(() -> new NotFoundException("La transferencia no existe"));
 
-		return convertToDto(transfer);
+		ModelMapper modelMapper = new ModelMapper();
+
+		return modelMapper.map(transfer, TransferenceDto.class);
 	}
 
-	private TransferenceDto convertToDto(Transference model) {
-		return modelMapper.map(model, TransferenceDto.class);
-	}
+//	private TransferenceDto convertToDto(Transference model) {
+//		return modelMapper.map(model, TransferenceDto.class);
+//	}
 
 	@Override
 	public List<Transference> findAll() {
