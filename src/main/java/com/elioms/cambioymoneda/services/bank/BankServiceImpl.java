@@ -23,17 +23,17 @@ public class BankServiceImpl implements BankService {
     @Autowired
     private IBankAccountDao iBankAccountDao;
 
-    @Autowired
-    private ModelMapper modelMapper;
+//    @Autowired
+//    private ModelMapper modelMapper;
 
     @Override
-    public List<BankDto> findAll() {
+    public List<Bank> findAll() {
 
-        List<Bank> banks = (List<Bank>) IBankDao.findAll();
+        return (List<Bank>) IBankDao.findAll();
 
-        return banks.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+//        return banks.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
     }
 
     @Override
@@ -42,23 +42,24 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public BankDto save(Bank bank) {
-        return convertToDto(IBankDao.save(bank));
+    public Bank save(Bank bank) {
+//        return convertToDto(IBankDao.save(bank));
+        return IBankDao.save(bank);
     }
 
     @Override
-    public BankDto findById(Long id) throws NotFoundException {
-        return convertToDto(IBankDao.findById(id).orElseThrow(
-                () -> new NotFoundException("Banco no encontrado")
-        ));
-//        return IBankDao.findById(id).orElseThrow(
+    public Bank findById(Long id) throws NotFoundException {
+//        return convertToDto(IBankDao.findById(id).orElseThrow(
 //                () -> new NotFoundException("Banco no encontrado")
-//        );
+//        ));
+        return IBankDao.findById(id).orElseThrow(
+                () -> new NotFoundException("Banco no encontrado")
+        );
     }
 
 
 
-    private BankDto convertToDto(Bank bank) {
-        return modelMapper.map(bank, BankDto.class);
-    }
+//    private BankDto convertToDto(Bank bank) {
+//        return modelMapper.map(bank, BankDto.class);
+//    }
 }

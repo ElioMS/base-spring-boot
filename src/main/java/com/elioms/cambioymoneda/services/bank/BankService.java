@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface BankService {
 
-    List<BankDto> findAll();
+    List<Bank> findAll();
     List<BankAccount> findPublicBankAccounts(Long id);
-    BankDto save(Bank bank);
-    BankDto findById(Long id);
+    Bank save(Bank bank);
+    Bank findById(Long id);
 
 }

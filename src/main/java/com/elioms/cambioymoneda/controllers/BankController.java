@@ -21,7 +21,7 @@ public class BankController {
     private BankService bankService;
 
     @GetMapping
-    public List<BankDto> index() {
+    public List<Bank> index() {
         return bankService.findAll();
     }
 
@@ -31,13 +31,13 @@ public class BankController {
     }
 
     @GetMapping("/{id}")
-    public BankDto show(@PathVariable Long id) {
+    public Bank show(@PathVariable Long id) {
         return bankService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BankDto store(@Valid @RequestBody Bank bank, Errors errors) {
+    public Bank store(@Valid @RequestBody Bank bank, Errors errors) {
         InvalidRequest.check(errors);
 
         return bankService.save(bank);
