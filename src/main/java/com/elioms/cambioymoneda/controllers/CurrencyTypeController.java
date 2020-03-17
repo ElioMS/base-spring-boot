@@ -4,7 +4,9 @@ import com.elioms.cambioymoneda.exceptions.InvalidRequest;
 import com.elioms.cambioymoneda.models.entity.FavoriteCurrencyType;
 import com.elioms.cambioymoneda.models.request.FavoriteCurrencyTypeRequest;
 
+import com.elioms.cambioymoneda.models.response.MessageResponse;
 import com.elioms.cambioymoneda.services.favoriteCurrencyType.FavoriteCurrencyTypeService;
+import com.twilio.http.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -46,7 +48,9 @@ public class CurrencyTypeController {
 
     @DeleteMapping("/favorites/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+
         favoriteCurrencyTypeService.deleteById(id);
+        return ResponseEntity.ok(new MessageResponse("OK"));
     }
 }

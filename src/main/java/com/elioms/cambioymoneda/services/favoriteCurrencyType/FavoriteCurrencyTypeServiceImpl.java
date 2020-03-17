@@ -83,6 +83,7 @@ public class FavoriteCurrencyTypeServiceImpl implements FavoriteCurrencyTypeServ
 
     @Override
     public void deleteById(Long id) {
+
         iFavoriteCurrencyTypeDao.deleteById(id);
     }
 }
