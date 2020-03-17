@@ -6,4 +6,6 @@ import com.elioms.cambioymoneda.models.entity.CurrencyTransference;
 
 public interface ICurrencyTransferenceDao extends CrudRepository<CurrencyTransference, Long>{
 
+    long deleteByTransferenceId(Long id);
+
 }

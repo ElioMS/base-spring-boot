@@ -3,10 +3,13 @@ package com.elioms.cambioymoneda.models.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,10 +38,16 @@ public class Transference implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @CreationTimestamp
+    private LocalDateTime createDateTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateDateTime;
+
     @Column(nullable = false)
     private Integer step;
 
-    @JsonIgnoreProperties({"transference"})
+    @JsonIgnoreProperties({"transference", "company"})
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transference", cascade = CascadeType.ALL)
     private List<BeneficiaryTransferDetail> beneficiaryTransferDetails;
     
@@ -50,9 +59,13 @@ public class Transference implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private BankAccount bankAccount;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"user", "hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
+
+    @JsonIgnoreProperties({"companies", "roles", "privileges", "hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
     
     public Transference()  {
         this.currencyTransferences = new ArrayList<>();

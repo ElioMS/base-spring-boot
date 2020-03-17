@@ -1,6 +1,7 @@
 package com.elioms.cambioymoneda.services;
 
 import com.elioms.cambioymoneda.models.entity.Privilege;
+import com.elioms.cambioymoneda.models.entity.Transference;
 import com.elioms.cambioymoneda.models.entity.User;
 import com.elioms.cambioymoneda.models.request.CreateUserRequest;
 import com.elioms.cambioymoneda.models.request.UpdateEmployeeRequest;
@@ -18,6 +19,8 @@ public interface UserService {
     void delete(Long id);
 
     User updateEmployee(UpdateEmployeeRequest body, Long id);
+
+    Transference lastTransferenceByUser(Long id);
 
     Boolean verifyUniqueEmail(String email);
     Boolean verifyUniqueDocumentNumber(String documentNumber);

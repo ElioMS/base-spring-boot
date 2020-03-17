@@ -4,6 +4,7 @@ import com.elioms.cambioymoneda.exceptions.NotFoundException;
 import com.elioms.cambioymoneda.models.dao.ICurrencyDao;
 import com.elioms.cambioymoneda.models.dao.IFavoriteCurrencyTypeDao;
 import com.elioms.cambioymoneda.models.dao.IUserDao;
+import com.elioms.cambioymoneda.models.entity.Currency;
 import com.elioms.cambioymoneda.models.entity.FavoriteCurrencyType;
 import com.elioms.cambioymoneda.models.request.FavoriteCurrencyTypeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,27 @@ public class FavoriteCurrencyTypeServiceImpl implements FavoriteCurrencyTypeServ
         newFavorite.setSalesCurrency(salesCurrency);
 
         return iFavoriteCurrencyTypeDao.save(newFavorite);
+    }
+
+    @Override
+    public FavoriteCurrencyType update(FavoriteCurrencyTypeRequest data, Long id) {
+        FavoriteCurrencyType favorite = iFavoriteCurrencyTypeDao.findById(id).orElseThrow(
+                () -> new NotFoundException("El tipo de cambio favorito no existe")
+        );
+
+        Currency salesCurrency = iCurrencyDao.findById(data.getSalesCurrencyId()).orElseThrow(
+                () -> new NotFoundException("El valor de la moneda de venta no existe")
+        );
+
+        Currency purchaseCurrency = iCurrencyDao.findById(data.getPurchaseCurrencyId()).orElseThrow(
+                () -> new NotFoundException("El valor de la moneda de venta no existe")
+        );
+
+        favorite.setValue(data.getValue());
+        favorite.setSalesCurrency(salesCurrency);
+        favorite.setPurchaseCurrency(purchaseCurrency);
+
+        return iFavoriteCurrencyTypeDao.save(favorite);
     }
 
     @Override

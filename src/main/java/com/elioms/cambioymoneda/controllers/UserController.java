@@ -131,6 +131,11 @@ public class UserController {
         return userService.save(currentUser);
     }
 
+    @GetMapping("/users/{id}/transference")
+    public ResponseEntity<?> lastTransferenceByUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.lastTransferenceByUser(id));
+    }
+
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

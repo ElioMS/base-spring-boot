@@ -18,5 +18,6 @@ public interface TransferenceService {
 	TransferenceDto findById(Long id);
 	
     Transference create(CreateTransferRequest transference);
+    Transference update(CreateTransferRequest transference, Long id);
 
 }

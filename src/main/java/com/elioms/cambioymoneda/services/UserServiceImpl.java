@@ -2,8 +2,10 @@ package com.elioms.cambioymoneda.services;
 
 import com.elioms.cambioymoneda.exceptions.NotFoundException;
 import com.elioms.cambioymoneda.models.dao.IPrivilegeDao;
+import com.elioms.cambioymoneda.models.dao.ITransferenceDao;
 import com.elioms.cambioymoneda.models.dao.IUserDao;
 import com.elioms.cambioymoneda.models.entity.Privilege;
+import com.elioms.cambioymoneda.models.entity.Transference;
 import com.elioms.cambioymoneda.models.entity.User;
 import com.elioms.cambioymoneda.models.request.CreateUserRequest;
 import com.elioms.cambioymoneda.models.request.UpdateEmployeeRequest;
@@ -33,6 +35,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private IPrivilegeDao iPrivilegeDao;
+
+    private ITransferenceDao transferenceDao;
+
+    public UserServiceImpl(ITransferenceDao iTransferenceDao) {
+        this.transferenceDao = iTransferenceDao;
+    }
 
     @Override
     public List<User> findAll() {
@@ -75,6 +83,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         employee.setEnabled(request.getStatus());
 
         return userDao.save(employee);
+    }
+
+    @Override
+    public Transference lastTransferenceByUser(Long id) {
+        return transferenceDao.findTopByUserIdOrderByIdDesc(id);
     }
 
     @Override

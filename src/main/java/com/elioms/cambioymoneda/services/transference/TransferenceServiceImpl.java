@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 public class TransferenceServiceImpl implements TransferenceService {
 
 	@Autowired
@@ -44,21 +46,19 @@ public class TransferenceServiceImpl implements TransferenceService {
 	@Override
 	public Transference create(CreateTransferRequest transference) {
 
+		var auth = SecurityContextHolder.getContext().getAuthentication().getName();
+		var user = iUserDao.findByEmail(auth);
+
 		var beneficiaries = transference.getBeneficiaries();
-//		beneficiaries.forEach(beneficiary -> {
-//			iBeneficiaryDao.findById(beneficiary.getId())
-//					.orElseThrow(() -> new NotFoundException("Beneficiario no existe"));
-//		});
 
 		var newTransfer = new Transference();
 		newTransfer.setType(transference.getType());
 		newTransfer.setTotalAmount(transference.getTotalAmount());
 		newTransfer.setStep(transference.getStep());
 		newTransfer.setStatus(transference.getStatus());
-//		newTransfer.setBeneficiaryTransferDetails(beneficiaries);
-//		newTransfer.setBeneficiaries(transference.getBeneficiaries());
 		newTransfer.setBankAccount(transference.getBankAccount());
 		newTransfer.setCompany(transference.getCompany());
+		newTransfer.setUser(user);
 
 		Transference transfer = iTransferenceDao.save(newTransfer);
 
@@ -68,7 +68,30 @@ public class TransferenceServiceImpl implements TransferenceService {
 		return newTransfer;
 	}
 
+	@Override
+	public Transference update(CreateTransferRequest transference, Long id) {
+
+		Transference transfer = iTransferenceDao.findById(id).orElseThrow(
+				() -> new NotFoundException("La transferencia no existe")
+		);
+
+		transfer.setType(transference.getType());
+		transfer.setTotalAmount(transference.getTotalAmount());
+		transfer.setStep(transference.getStep());
+		transfer.setStatus(transference.getStatus());
+		transfer.setBankAccount(transference.getBankAccount());
+		transfer.setCompany(transference.getCompany());
+
+		createBeneficiaryDetails(transference.getBeneficiaries(), transfer);
+		createCurrencyValues(transference.getCurrencyValues(), transfer);
+
+		return iTransferenceDao.save(transfer);
+	}
+
 	private void createBeneficiaryDetails(List<BeneficiaryTransferDetail> values, Transference transfer) {
+
+		iBeneficiaryTransferDetailDao.deleteByTransferenceId(transfer.getId());
+
 		values.forEach(val -> {
 			val.setTransference(transfer);
 			iBeneficiaryTransferDetailDao.save(val);
@@ -76,6 +99,9 @@ public class TransferenceServiceImpl implements TransferenceService {
 	}
 
 	private void createCurrencyValues(List<CurrencyTransference> values, Transference transfer) {
+
+		iCurrencyTransferenceDao.deleteByTransferenceId(transfer.getId());
+
 		values.forEach(e -> {
 			e.setCode(RandomStringUtils.randomAlphanumeric(10));
 			e.setTransference(transfer);

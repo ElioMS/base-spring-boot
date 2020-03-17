@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface ITransferenceDao extends JpaRepository<Transference, Long> {
 
+    Transference findTopByUserIdOrderByIdDesc(Long id);
+
     @Query("SELECT t FROM Transference t WHERE t.company.id IN (:companyList)")
     Page<Transference> findByCompanyList(List<Long> companyList, Pageable req);
 

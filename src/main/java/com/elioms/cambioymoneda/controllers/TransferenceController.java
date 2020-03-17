@@ -1,6 +1,7 @@
 package com.elioms.cambioymoneda.controllers;
 
 import com.elioms.cambioymoneda.exceptions.InvalidRequest;
+import com.elioms.cambioymoneda.models.entity.Transference;
 import com.elioms.cambioymoneda.models.request.ConversionRequest;
 import com.elioms.cambioymoneda.models.request.CreateTransferRequest;
 import com.elioms.cambioymoneda.models.response.MessageResponse;
@@ -14,6 +15,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/v1/transfers")
@@ -37,7 +39,13 @@ public class TransferenceController {
     @PostMapping("/convert")
     public ResponseEntity<?> convert(@Valid @RequestBody ConversionRequest body) {
         var calculate = body.getInAmmount() * body.getCurrencyValue();
-        return ResponseEntity.ok(new MessageResponse("El monto calculado: "+calculate));
+
+        HashMap<String, Object> hashmap = new HashMap<String, Object>();
+
+        hashmap.put("salesCurrency", 3.33);
+        hashmap.put("purchaseCurrency", 3.60);
+
+        return ResponseEntity.ok(hashmap);
     }
     
     @PostMapping
@@ -45,9 +53,16 @@ public class TransferenceController {
     public ResponseEntity<?> store(@Valid @RequestBody CreateTransferRequest transference, Errors errors) {
         InvalidRequest.check(errors);
 
-        transferenceService.create(transference);
+        Transference transfer = transferenceService.create(transference);
 
-        return new ResponseEntity<>(new MessageResponse("La solicitud de transferencia ha sido generada"), HttpStatus.CREATED);
+        return new ResponseEntity<>(transfer, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody CreateTransferRequest transference, Errors errors, @PathVariable Long id) {
+        InvalidRequest.check(errors);
+
+        return ResponseEntity.ok(transferenceService.update(transference, id));
     }
 
     @GetMapping("History")

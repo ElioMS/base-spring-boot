@@ -37,6 +37,13 @@ public class CurrencyTypeController {
         return favoriteCurrencyTypeService.save(body);
     }
 
+    @PutMapping("favorites/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody FavoriteCurrencyTypeRequest body, Errors errors, @PathVariable Long id) {
+        InvalidRequest.check(errors);
+
+        return ResponseEntity.ok(favoriteCurrencyTypeService.update(body, id));
+    }
+
     @DeleteMapping("/favorites/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

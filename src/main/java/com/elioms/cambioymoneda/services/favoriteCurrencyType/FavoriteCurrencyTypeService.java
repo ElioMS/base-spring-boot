@@ -12,5 +12,6 @@ public interface FavoriteCurrencyTypeService {
     List<FavoriteCurrencyType> findAll();
     List<FavoriteCurrencyType> findByUserId(Long userId);
     FavoriteCurrencyType save(FavoriteCurrencyTypeRequest data);
+    FavoriteCurrencyType update(FavoriteCurrencyTypeRequest data, Long id);
     void deleteById(Long id);
 }
