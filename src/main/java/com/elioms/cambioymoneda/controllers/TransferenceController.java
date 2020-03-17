@@ -4,6 +4,7 @@ import com.elioms.cambioymoneda.exceptions.InvalidRequest;
 import com.elioms.cambioymoneda.models.entity.Transference;
 import com.elioms.cambioymoneda.models.request.ConversionRequest;
 import com.elioms.cambioymoneda.models.request.CreateTransferRequest;
+import com.elioms.cambioymoneda.models.request.UpdateTransferenceRequest;
 import com.elioms.cambioymoneda.models.response.MessageResponse;
 import com.elioms.cambioymoneda.services.transference.TransferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class TransferenceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody CreateTransferRequest transference, Errors errors, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody UpdateTransferenceRequest transference, Errors errors, @PathVariable Long id) {
         InvalidRequest.check(errors);
 
         return ResponseEntity.ok(transferenceService.update(transference, id));

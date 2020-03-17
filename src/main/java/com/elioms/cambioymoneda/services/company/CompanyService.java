@@ -11,6 +11,7 @@ public interface CompanyService {
     List<Company> findAll();
     List<BeneficiaryDto> findBeneficiaries(Long id);
     List<BankAccount> findBankAccounts(Long id, Long bankId);
+    List<BankAccount> listBankAccounts(Long id);
     Company save(Company company);
 
     Boolean existsByRuc(String ruc);

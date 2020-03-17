@@ -8,6 +8,7 @@ import com.elioms.cambioymoneda.models.dto.TransferenceDto;
 import com.elioms.cambioymoneda.models.entity.*;
 import com.elioms.cambioymoneda.models.request.CreateTransferRequest;
 
+import com.elioms.cambioymoneda.models.request.UpdateTransferenceRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -69,7 +70,7 @@ public class TransferenceServiceImpl implements TransferenceService {
 	}
 
 	@Override
-	public Transference update(CreateTransferRequest transference, Long id) {
+	public Transference update(UpdateTransferenceRequest transference, Long id) {
 
 		Transference transfer = iTransferenceDao.findById(id).orElseThrow(
 				() -> new NotFoundException("La transferencia no existe")
@@ -79,11 +80,22 @@ public class TransferenceServiceImpl implements TransferenceService {
 		transfer.setTotalAmount(transference.getTotalAmount());
 		transfer.setStep(transference.getStep());
 		transfer.setStatus(transference.getStatus());
-		transfer.setBankAccount(transference.getBankAccount());
-		transfer.setCompany(transference.getCompany());
 
-		createBeneficiaryDetails(transference.getBeneficiaries(), transfer);
-		createCurrencyValues(transference.getCurrencyValues(), transfer);
+		if (transfer.getBankAccount() != null) {
+			transfer.setBankAccount(transference.getBankAccount());
+		}
+
+		if (transfer.getCompany() != null) {
+			transfer.setCompany(transference.getCompany());
+		}
+
+		if (transference.getBeneficiaries() != null) {
+			createBeneficiaryDetails(transference.getBeneficiaries(), transfer);
+		}
+
+		if (transference.getCurrencyValues() != null) {
+			createCurrencyValues(transference.getCurrencyValues(), transfer);
+		}
 
 		return iTransferenceDao.save(transfer);
 	}

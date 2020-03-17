@@ -18,6 +18,8 @@ public interface IBankAccountDao extends PagingAndSortingRepository<BankAccount,
 
     List<BankAccount> findByCompanyIdAndBankId(Long id, Long bankId);
 
+    List<BankAccount> findByCompanyId(Long id);
+
     BankAccount findTopByOrderByIdDesc();
 
 }

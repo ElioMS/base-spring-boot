@@ -57,6 +57,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public List<BankAccount> listBankAccounts(Long id) {
+        return iBankAccountDao.findByCompanyId(id);
+    }
+
+    @Override
     public Company save(Company company) {
         return companyRepository.save(company);
     }

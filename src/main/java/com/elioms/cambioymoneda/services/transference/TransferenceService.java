@@ -5,6 +5,7 @@ import java.util.List;
 import com.elioms.cambioymoneda.models.dto.TransferenceDto;
 import com.elioms.cambioymoneda.models.entity.Transference;
 import com.elioms.cambioymoneda.models.request.CreateTransferRequest;
+import com.elioms.cambioymoneda.models.request.UpdateTransferenceRequest;
 import org.springframework.data.domain.Page;
 
 public interface TransferenceService {
@@ -18,6 +19,6 @@ public interface TransferenceService {
 	TransferenceDto findById(Long id);
 	
     Transference create(CreateTransferRequest transference);
-    Transference update(CreateTransferRequest transference, Long id);
+    Transference update(UpdateTransferenceRequest transference, Long id);
 
 }

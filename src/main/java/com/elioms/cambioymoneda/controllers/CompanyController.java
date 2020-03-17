@@ -37,6 +37,11 @@ public class CompanyController {
         return companyService.findBankAccounts(id, bankId);
     }
 
+    @GetMapping("/{id}/bankAccounts")
+    public List<BankAccount> findCompanyBankAccounts(@PathVariable Long id) {
+        return companyService.listBankAccounts(id);
+    }
+
     @PostMapping
     public Company createCompany(@Valid @RequestBody Company company, Errors errors) {
         InvalidRequest.check(errors);

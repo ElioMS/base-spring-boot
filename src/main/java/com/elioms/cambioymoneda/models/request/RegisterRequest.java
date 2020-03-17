@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class RegisterRequest {
 
+    @NotNull
     private Long companyId;
 
     @NotEmpty

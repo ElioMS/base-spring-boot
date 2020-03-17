@@ -18,9 +18,9 @@ import java.util.Map;
 @RequestMapping("/api/v1/twillio")
 public class TwilioController {
 
-	public static final String ACCOUNT_SID = "AC9db0997479679f07884b5449201eab43";
-	public static final String AUTH_TOKEN = "0b58677a4d25f65dde5b63c5ba76829b";
-	public static final String TWILIO_NUMBER = "+12052738621";
+	public static final String ACCOUNT_SID = "AC3ac0ca73c6669b001ddc5497cd50b126";
+	public static final String AUTH_TOKEN = "88e41c87b55b4437e9f3e84560a9f0d0";
+	public static final String TWILIO_NUMBER = "+13098071427";
 
 	@PostMapping("/sms")
 	public ResponseEntity<?> sendSms(@RequestBody Map<String, String> body) {
