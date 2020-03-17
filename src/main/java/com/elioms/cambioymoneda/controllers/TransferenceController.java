@@ -39,7 +39,6 @@ public class TransferenceController {
 
     @PostMapping("/convert")
     public ResponseEntity<?> convert(@Valid @RequestBody ConversionRequest body) {
-        var calculate = body.getInAmmount() * body.getCurrencyValue();
 
         HashMap<String, Object> hashmap = new HashMap<String, Object>();
 
